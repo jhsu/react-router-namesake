@@ -40,5 +40,9 @@
     "react-router",
     "navigation",
     "link"
-  ]
+  ],
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react-router-dom": "^4.2.2"
+  }
 }
