@@ -1,19 +1,5 @@
-import React from 'react';
+import * as React from 'react';
 
-const { Provider, Consumer } = React.createContext({});  
+const { Provider: NamesakeProvider, Consumer } = React.createContext({});
 
-export { Provider };
-
-class Router extends React.Component {
-  static defaultProps = {
-    routes: {},
-  };
-  
-  state = {
-    routes: this.props.routes,
-  };
-
-  render() {
-    return <Route></Route>;
-  }
-}
+export { NamesakeProvider };

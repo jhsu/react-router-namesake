@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "description": "Named routes for react-router",
   "main": "dist/index.js",
+  "homepage": "https://github.com/jhsu/react-router-namesake",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhsu/react-router-namesake.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jhsu/react-router-namesake/issues"
+  },
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "authors": [
     "Joe Hsu"
@@ -21,6 +28,7 @@
     "react": ">=16.3.0"
   },
   "devDependencies": {
+    "@types/react": "^16.3.12",
     "react": "^16.3.0",
     "typescript": "^2.8.3"
   },
