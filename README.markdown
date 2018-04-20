@@ -1,3 +1,5 @@
+![react-router-namesake logo](logo.png)
+
 # react-router-namesake
 
 
