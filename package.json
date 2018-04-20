@@ -12,7 +12,8 @@
     "url": "https://github.com/jhsu/react-router-namesake/issues"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prerelease": "npm run build"
   },
   "authors": [
     "Joe Hsu"
