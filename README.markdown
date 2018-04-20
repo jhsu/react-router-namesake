@@ -4,13 +4,9 @@
 ## Example
 
 ```jsx
-import * as React from "react";
 import { Router as NamesakeRouter, WithNamesake } from "react-router-namesake";
 import { Switch } from "react-router";
-import { BrowserRouter, Route, Link } from "react-router-dom";o
-
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import { Router, WithNamesake } from 'react-router-namesake';
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 const NamedLink = ({ to, params, ...props }) => {
   return (
