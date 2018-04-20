@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Route, generatePath } from 'react-router-dom';
+import { History } from 'history';
 
 const { Provider: NamesakeProvider, Consumer: NamesakeConsumer } = React.createContext({});
 
 export interface NamesakeRouterProps {
+  history: History,
   push: Function,
   routes: {
     [key: string]: string,
@@ -40,25 +42,21 @@ export class Router extends React.Component<NamesakeRouterProps, {}> {
   };
 
   render() {
+    const { children, routes, push, ...props } = this.props;
     return (
       <NamesakeProvider value={this.state}>
-        {this.props.children}
+        {children}
       </NamesakeProvider>
     );
   }
 }
 
 export interface WithNamesakeProps {
-  children(): React.ReactNode[];
+  children(props: {}): React.ReactNode;
 }
 
 export class WithNamesake extends React.Component<WithNamesakeProps, {}> {
   render() {
-    return <Route>
-      {({ history }) => {
-        <NamesakeConsumer>{(routes) => this.props.children()}</NamesakeConsumer>
-      }}
-    </Route>
-
+    return <NamesakeConsumer>{(routes) => this.props.children({ routes })}</NamesakeConsumer>;
   }
 }
