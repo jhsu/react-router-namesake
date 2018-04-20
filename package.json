@@ -1,0 +1,36 @@
+{
+  "name": "react-router-namesake",
+  "version": "0.1.0",
+  "description": "Named routes for react-router",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "authors": [
+    "Joe Hsu"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts"
+  ],
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "peerDependencies": {
+    "react": ">=16.3.0"
+  },
+  "devDependencies": {
+    "react": "^16.3.0",
+    "typescript": "^2.8.3"
+  },
+  "keywords": [
+    "react",
+    "router",
+    "route",
+    "routing",
+    "react-router",
+    "navigation",
+    "link"
+  ]
+}
