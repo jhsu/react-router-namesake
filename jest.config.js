@@ -1,7 +1,8 @@
 module.exports = {
   "roots": [
-  "<rootDir>/src"
+    "<rootDir>/src"
   ],
+  "setupTestFrameworkScriptFile": "<rootDir>/__tests__/setup.ts",
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
