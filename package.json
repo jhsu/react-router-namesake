@@ -13,7 +13,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "prerelease": "npm run build"
+    "test": "jest",
+    "prerelease": "npm run build",
+    "lint": "tslint --config ./tslint.json src/**/*.tsx?"
   },
   "authors": [
     "Joe Hsu"
@@ -30,9 +32,15 @@
   },
   "devDependencies": {
     "@types/history": "^4.6.2",
+    "@types/jest": "^22.2.3",
     "@types/react": "^16.3.12",
     "@types/react-router-dom": "^4.2.6",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1",
     "react": "^16.3.0",
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
     "typescript": "^2.8.3"
   },
   "keywords": [
