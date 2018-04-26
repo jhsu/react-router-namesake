@@ -1,6 +1,6 @@
 {
   "name": "react-router-namesake",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Named routes for react-router",
   "main": "lib/index.js",
   "homepage": "https://github.com/jhsu/react-router-namesake",
