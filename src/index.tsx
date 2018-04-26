@@ -1,19 +1,17 @@
-import { History } from 'history';
 import * as React from 'react';
 import { generatePath, Route  } from 'react-router-dom';
 
+import NamesakeLink from './NamesakeLink';
+import NamesakeRoute from './NamesakeRoute';
 import WithNamesake from './WithNamesake';
 
 const { Provider: NamesakeProvider, Consumer: NamesakeConsumer } = React.createContext({});
 
-// export {}
-
 export interface INamesakeRouterProps {
-  history: History;
-  routes: {
+  routes?: {
     [key: string]: string,
   };
-  push(routeName: string, state: {}): void;
+  push?(routeName: string, state: {}): void;
 }
 
 export interface INamesakeRouterState {
@@ -55,4 +53,4 @@ export class Router extends React.Component<INamesakeRouterProps, {}> {
   }
 }
 
-export { NamesakeConsumer, NamesakeProvider, WithNamesake };
+export { NamesakeConsumer, NamesakeProvider, NamesakeLink, NamesakeRoute, WithNamesake };

@@ -1,19 +1,20 @@
 import { mount,shallow } from 'enzyme';
 import * as React from 'react';
-import { NamesakeConsumer, NamesakeProvider, Router, WithNamesake } from './index';
+import { NamesakeProvider } from './index';
+
+import WithNamesake from './WithNamesake';
 
 describe('WithNamesake', () => {
   it('should pass down routes', (done) => {
-    const routeConfig = {
-      'hello': '/hello',
-    };
-    const wrapper = mount(
-      <Router routes={routeConfig}>
-        <NamesakeConsumer>{(routes: { route(routeName: string): string }) => {
-          expect(routes.route('hello')).toEqual(routeConfig.hello);
-          done();
-        }}</NamesakeConsumer>
-      </Router>
+    const providerValue = 123;
+    const Provider = ({ children }) => <NamesakeProvider value={providerValue}>{children}</NamesakeProvider>;
+    mount(
+      <Provider>
+        <WithNamesake>{(value) => {
+          expect(value).toEqual(providerValue);
+          done()
+        }}</WithNamesake>
+      </Provider>
     );
   });
 });
