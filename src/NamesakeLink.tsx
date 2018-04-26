@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 
 import WithNamesake from './WithNamesake';
 
-export interface INamesakeLink {
+export interface INamesakeLink extends LinkProps {
   to: string;
   params?: {};
 }
