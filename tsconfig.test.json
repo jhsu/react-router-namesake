@@ -4,13 +4,11 @@
     "target": "es5",
     "declaration": true,
     "outDir": "./lib",
+    "strict": true,
     "typeRoots": ["typings", "node_modules/@types"],
     "jsx": "react"
   },
   "include": [
     "src/**/*"
-  ],
-  "exclude": [
-    "src/**/*.spec.tsx"
   ]
 }

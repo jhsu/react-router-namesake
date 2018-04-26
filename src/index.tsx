@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { Route, generatePath } from 'react-router-dom';
-import { History } from 'history';
+import { generatePath, Route  } from 'react-router-dom';
+
+import NamesakeLink from './NamesakeLink';
+import NamesakeRoute from './NamesakeRoute';
+import WithNamesake from './WithNamesake';
 
 const { Provider: NamesakeProvider, Consumer: NamesakeConsumer } = React.createContext({});
 
-export interface NamesakeRouterProps {
-  history: History,
-  push: Function,
-  routes: {
+export interface INamesakeRouterProps {
+  routes?: {
     [key: string]: string,
   };
+  push?(routeName: string, state: {}): void;
 }
 
-export interface NamesakeRouterState {
+export interface INamesakeRouterState {
   routes: {
     [key: string]: string,
   };
@@ -20,12 +22,12 @@ export interface NamesakeRouterState {
   transitionTo(routeName: string, params: {}, state: {}): void;
 }
 
-export class Router extends React.Component<NamesakeRouterProps, {}> {
-  static defaultProps = {
+export class Router extends React.Component<INamesakeRouterProps, {}> {
+  private static defaultProps = {
     routes: {},
   };
 
-  state = {
+  public state = {
     routes: this.props.routes,
 
     route: (routeName: string, params={}): string => {
@@ -41,7 +43,7 @@ export class Router extends React.Component<NamesakeRouterProps, {}> {
     },
   };
 
-  render() {
+  public render() {
     const { children, routes, push, ...props } = this.props;
     return (
       <NamesakeProvider value={this.state}>
@@ -51,12 +53,4 @@ export class Router extends React.Component<NamesakeRouterProps, {}> {
   }
 }
 
-export interface WithNamesakeProps {
-  children(props: {}): React.ReactNode;
-}
-
-export class WithNamesake extends React.Component<WithNamesakeProps, {}> {
-  render() {
-    return <NamesakeConsumer>{(routes) => this.props.children({ routes })}</NamesakeConsumer>;
-  }
-}
+export { NamesakeConsumer, NamesakeProvider, NamesakeLink, NamesakeRoute, WithNamesake };
