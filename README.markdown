@@ -1,6 +1,7 @@
 ![react-router-namesake logo](logo.png)
 
 # react-router-namesake
+[![Build Status](https://travis-ci.org/jhsu/react-router-namesake.svg?branch=master)](https://travis-ci.org/jhsu/react-router-namesake)
 
 
 ## Example
