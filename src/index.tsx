@@ -19,6 +19,7 @@ export interface INamesakeRouterState {
     [key: string]: string,
   };
   route(routeName: string, params: {}): string;
+  path(routeName: string): string;
   transitionTo(routeName: string, params: {}, state: {}): void;
 }
 
@@ -28,14 +29,22 @@ export class Router extends React.Component<INamesakeRouterProps, {}> {
   };
 
   public state = {
+    path: (routeName: string): string => {
+      const route = this.state.routes[routeName];
+      if (!route) {
+        throw new Error(`Unable to find route for '${routeName}'`);
+      }
+      return route;
+    },
+
     routes: this.props.routes,
 
     route: (routeName: string, params={}): string => {
       const route = this.state.routes[routeName];
-      if (route) {
-        return generatePath(route, params);
+      if (!route) {
+        throw new Error(`Unable to find route for '${routeName}'`);
       }
-      throw new Error(`Unable to find route for '${routeName}'`);
+      return generatePath(route, params);
     },
 
     transitionTo: (routeName: string, params={}, state={}): void => {
