@@ -19,7 +19,7 @@ describe('NamesakeRoute', () => {
     const wrapper = mount(
       <Router>
         <Provider>
-          <NamesakeRoute to='home.path' params={{ id: 1 }}></NamesakeRoute>
+          <NamesakeRoute path='home.path'></NamesakeRoute>
         </Provider>
       </Router>
     );
