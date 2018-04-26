@@ -11,11 +11,11 @@ export interface IWithNamesakeRoute {
   children?(params: { routes: INamesakeRouterState, history: History }): React.ReactNode;
 }
 
-export default class WithNamesakeRoute extends React.Component<IWithNamesakeRoute, {}> {
+export default class NamesakeRoute extends React.Component<IWithNamesakeRoute, {}> {
   public render() {
     const { path, params, ...routeParams } = this.props;
     return (<NamesakeConsumer>{
       (routes: INamesakeRouterState) => (<Route path={routes.path(path)} {...routeParams} />)
     }</NamesakeConsumer>);
- }
+  }
 }

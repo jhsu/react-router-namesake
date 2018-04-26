@@ -9,9 +9,8 @@ describe('NamesakeRoute', () => {
   it('should pass down routes', (done) => {
     const Provider = ({ children }) => {
       return <NamesakeProvider value={{
-        route(name: string, params: {}) {
+        path(name: string) {
           expect(name).toEqual('home.path');
-          expect(params).toEqual({ id: 1 });
           done();
         },
       }}>{children}</NamesakeProvider>;
