@@ -1,9 +1,10 @@
 import { History } from 'history';
 import * as React from 'react';
+import { RouteProps } from 'react-router';
 import { Route } from 'react-router-dom';
 import { INamesakeRouterState, NamesakeConsumer } from './index';
 
-export interface IWithNamesakeRoute {
+export interface IWithNamesakeRoute extends RouteProps {
   path: string;
   params?: {
     [key: string]: any,
