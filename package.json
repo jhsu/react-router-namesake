@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "prerelease": "npm run build",
+    "prepublish": "npm run build",
     "lint": "tslint --config ./tslint.json src/**/*.tsx?"
   },
   "authors": [
