@@ -7,17 +7,15 @@
 ## Example
 
 ```jsx
-import { Router as NamesakeRouter, WithNamesake } from "react-router-namesake";
 import { Switch } from "react-router";
 import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Router as NamesakeRouter, WithNamesake, NamesakeLink, NamesakeRoute } from "react-router-namesake";
 
-const NamedLink = ({ to, params, ...props }) => {
-  return (
-    <WithNamesake>
-      {({ routes  }) => <Link to={routes.route(to, params)} {...props} />}
-    </WithNamesake>
-  );
-};
+const ButtonLink = ({ to, params }) => {
+  return <WithNamesake>{({ routes }) => (
+    <button onClick={() => routes.transitionTo(path, params)}>{this.props.children}</button>
+  )}</WithNamesake>;
+}
 
 const App = () => (
   <div>
@@ -33,12 +31,18 @@ const App = () => (
         >
           <div>
             <nav>
-              <NamedLink to="home">Home</NamedLink>
-              <NamedLink to="users">users</NamedLink>
-              <NamedLink to="user" params={{ userId: 123 }}>
+              <NamesakeLink to="home">Home</NamesakeLink>
+              <NamesakeLink to="users">users</NamesakeLink>
+              <NamesakeLink to="user" params={{ userId: 123 }}>
                 user id 123
-              </NamedLink>
+              </NamesakeLink>
             </nav>
+
+            <NamesakeRoute exact path='user'>
+              <p>This renders for /user/:userId</p>
+            </NamesakeRoute>
+
+            <ButtonLink to='user' params={{ userId: 123 }}>Go to User 123</ButtonLink>
 
             <Switch>
               <Route exact path="/home">
