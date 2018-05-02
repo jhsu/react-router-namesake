@@ -5,7 +5,7 @@
     "declaration": true,
     "outDir": "./lib",
     "typeRoots": ["typings", "node_modules/@types"],
-    "types": ["react", "react-router-dom", "react-router"],
+    "types": ["react", "react-router-dom", "react-router", "jest"],
     "jsx": "react"
   },
   "include": [
