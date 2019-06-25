@@ -1,6 +1,6 @@
 {
   "name": "react-router-namesake",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "description": "Named routes for react-router",
   "main": "lib/index.js",
   "homepage": "https://github.com/jhsu/react-router-namesake",
@@ -20,7 +20,7 @@
   "authors": [
     "Joe Hsu"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "files": [
     "lib/"
   ],
@@ -34,18 +34,18 @@
     "@types/enzyme": "^3.9.0",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/history": "^4.7.2",
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^24.0.15",
     "@types/prettier": "^1.16.1",
     "@types/react": "^16.8.3",
     "@types/react-dom": "^16.8.2",
-    "@types/react-router-dom": "^4.3.1",
+    "@types/react-router": "^5.0.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
-    "jest": "^22.4.4",
+    "jest": "^24.8.0",
     "prettier": "^1.16.4",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.13.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^2.9.2"
