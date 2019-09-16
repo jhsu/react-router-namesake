@@ -39,10 +39,11 @@ export interface INamesakeLinkProps {
 }
 
 export interface INamesakeSwitchProps {
-  children: React.ReactChildren;
+  children: React.ReactElement | React.ReactElement[];
 }
 
 export interface IEnrichedChildren {
+  exact?: boolean;
   path: string;
 }
 
@@ -85,17 +86,22 @@ const createRouter = (
         render={({ location }) => {
           let element: React.ReactElement | null = null;
           let match: {} | null = null;
-          React.Children.forEach(children, (child: React.ReactChildren) => {
-            if (!React.isValidElement<IEnrichedChildren>(child)) {
-              return null;
+          React.Children.forEach(children, (child: React.ReactElement, idx) => {
+            if (match || !React.isValidElement<IEnrichedChildren>(child)) {
+              return;
             }
-            if (match === null) {
-              element = child;
-              const path = child.props.path;
-              match = path
-                ? matchPath(location.pathname, { path: routePath(path) })
-                : null;
-            }
+            element = child;
+            const { exact, path } = child.props;
+            match = path
+              ? matchPath(location.pathname, {
+                  exact,
+                  path: routePath(path)
+                })
+              : matchPath(location.pathname, {
+                  exact: false,
+                  path: "/",
+                  strict: false
+                });
           });
           return match && element
             ? React.cloneElement(element, { location, computedMatch: match })
