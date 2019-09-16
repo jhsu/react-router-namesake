@@ -4,6 +4,7 @@ import {
   generatePath,
   Link,
   LinkProps,
+  matchPath,
   Route,
   RouteProps
 } from "react-router-dom";
@@ -14,7 +15,9 @@ export interface INamesakeHook {
 }
 
 export interface INamesakeRouter {
+  getPath: (path: string, params: IParams) => string;
   Route(props: RouteProps): React.ReactElement;
+  Switch(props: INamesakeSwitchProps): React.ReactElement;
   Link(props: LinkProps): React.ReactElement;
   useNamesake(): INamesakeHook;
 }
@@ -34,14 +37,24 @@ export interface INamesakeLinkProps {
   replace?: boolean;
   innerRef?: React.Ref<any>;
 }
-type Blah = string;
+
+export interface INamesakeSwitchProps {
+  children: React.ReactChildren;
+}
+
+export interface IEnrichedChildren {
+  path: string;
+}
 
 const createRouter = (
   routes: { [key: string]: string } = {},
   history: History
 ): INamesakeRouter => {
-  const getPath = (paths: string, params: IParams = {}): string => {
-    return generatePath(routes[paths], params);
+  const getPath = (path: string, params: IParams = {}): string => {
+    return generatePath(routePath(path), params);
+  };
+  const routePath = (path: string): string => {
+    return routes[path];
   };
 
   const NamesakeRoute = ({
@@ -64,6 +77,34 @@ const createRouter = (
     return <Link {...props} to={path} />;
   };
 
+  const NamesakeSwitch = ({
+    children
+  }: INamesakeSwitchProps): React.ReactElement => {
+    return (
+      <Route
+        render={({ location }) => {
+          let element: React.ReactElement | null = null;
+          let match: {} | null = null;
+          React.Children.forEach(children, (child: React.ReactChildren) => {
+            if (!React.isValidElement<IEnrichedChildren>(child)) {
+              return null;
+            }
+            if (match === null) {
+              element = child;
+              const path = child.props.path;
+              match = path
+                ? matchPath(location.pathname, { path: routePath(path) })
+                : null;
+            }
+          });
+          return match && element
+            ? React.cloneElement(element, { location, computedMatch: match })
+            : null;
+        }}
+      />
+    );
+  };
+
   const useNamesake = (): INamesakeHook => {
     return {
       history,
@@ -76,7 +117,13 @@ const createRouter = (
     };
   };
 
-  return { Route: NamesakeRoute, Link: NamesakeLink, useNamesake };
+  return {
+    Link: NamesakeLink,
+    Route: NamesakeRoute,
+    Switch: NamesakeSwitch,
+    getPath,
+    useNamesake
+  };
 };
 
 export default createRouter;
