@@ -20,7 +20,7 @@ const routes = {
   page: "/pages/:pageId"
 };
 
-const { Route, Link, useNamesake } = createRouter(routes, history);
+const { Route, Switch, Link, useNamesake } = createRouter(routes, history);
 
 const App = () => {
   const { transitionTo } = useNamesake();
@@ -35,14 +35,16 @@ const App = () => {
         <button onClick={() => void transitionTo("home")}>go home</button>
       </nav>
       <div>
-        <Route exact path="home" render={() => <div>home</div>} />
-        <Route exact path="about" render={() => <div>about</div>} />
-        <Route
-          exact
-          path="page"
-          params={{ pageId: 1 }}
-          render={() => <div>page 1</div>}
-        />
+        <Switch>
+          <Route exact path="home" render={() => <div>home</div>} />
+          <Route exact path="about" render={() => <div>about</div>} />
+          <Route
+            exact
+            path="page"
+            params={{ pageId: 1 }}
+            render={() => <div>page 1</div>}
+          />
+        </Switch>
       </div>
     </Router>
   );
