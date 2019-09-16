@@ -6,12 +6,14 @@
     "outDir": "./lib",
     "typeRoots": ["typings", "node_modules/@types"],
     "types": ["react", "react-router-dom", "react-router"],
-    "jsx": "react"
+    "jsx": "react",
+    "strict": true
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
-    "src/**/*.spec.tsx"
+    "node_modules",
+    "**/__testes__/*"
   ]
 }

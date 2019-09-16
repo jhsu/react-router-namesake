@@ -1,8 +1,9 @@
 {
   "name": "react-router-namesake",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "Named routes for react-router",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "homepage": "https://github.com/jhsu/react-router-namesake",
   "repository": {
     "type": "git",
@@ -15,6 +16,7 @@
     "build": "tsc",
     "test": "jest",
     "prepublish": "npm run build",
+    "preversioin": "npm run lint",
     "lint": "tslint --config ./tslint.json src/**/*.tsx?"
   },
   "authors": [
@@ -22,9 +24,8 @@
   ],
   "license": "Apache-2.0",
   "files": [
-    "lib/"
+    "lib/**/*"
   ],
-  "types": "lib/index.d.ts",
   "sideEffects": false,
   "peerDependencies": {
     "react": ">=16.8.0",
