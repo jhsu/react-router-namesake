@@ -1,6 +1,12 @@
-import { History, Location } from "history";
+import { History, Location, LocationDescriptor } from "history";
 import * as React from "react";
-import { generatePath, Link, LinkProps, Route, RouteProps } from "react-router-dom";
+import {
+  generatePath,
+  Link,
+  LinkProps,
+  Route,
+  RouteProps
+} from "react-router-dom";
 
 export interface INamesakeHook {
   history: History;
@@ -18,24 +24,24 @@ export interface IParams {
 }
 
 export interface INamesakeRouteProps extends RouteProps {
-  path: string,
+  path: string;
   params?: IParams;
 }
 
 export interface INamesakeLinkProps {
   params?: IParams;
-  to: string | string[],
-  replace?: boolean,
-  innerRef?: React.Ref<any>,
+  to: string;
+  replace?: boolean;
+  innerRef?: React.Ref<any>;
 }
+type Blah = string;
 
-const createRouter = (routes = {}, history: History): INamesakeRouter => {
-  const getPath = (paths: string | string[], params: IParams = {}): string | string[] => {
-    if (Array.isArray(paths)) {
-      return paths.map(path => generatePath(routes[path], params));
-    } else {
-      return generatePath(routes[paths], params);
-    }
+const createRouter = (
+  routes: { [key: string]: string } = {},
+  history: History
+): INamesakeRouter => {
+  const getPath = (paths: string, params: IParams = {}): string => {
+    return generatePath(routes[paths], params);
   };
 
   const NamesakeRoute = ({
@@ -43,7 +49,9 @@ const createRouter = (routes = {}, history: History): INamesakeRouter => {
     params,
     ...props
   }: INamesakeRouteProps): React.ReactElement => {
-    const path = getPath(namedPath, params);
+    const path = Array.isArray(namedPath)
+      ? namedPath.map(p => getPath(namedPath, params))
+      : getPath(namedPath, params);
     return <Route {...props} path={path} />;
   };
 
@@ -52,17 +60,12 @@ const createRouter = (routes = {}, history: History): INamesakeRouter => {
     params,
     ...props
   }: INamesakeLinkProps): React.ReactElement => {
-    const namedPathString = namedPath;
-    // normalize
-
-    const path = getPath(namedPathString, params);
+    const path: LocationDescriptor = getPath(namedPath, params);
     return <Link {...props} to={path} />;
   };
 
   const useNamesake = (): INamesakeHook => {
     return {
-      // back: historly.back,
-      // push: history.push,
       history,
       transitionTo: (namedPath: string, params: IParams): void => {
         const pathname = getPath(namedPath, params);
