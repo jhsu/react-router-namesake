@@ -13,7 +13,8 @@ beforeEach(() => {
 
 const routes = {
   home: "/home",
-  test: "/test"
+  root: "/",
+  test: "/test",
 };
 
 test("renders switch fallback", () => {
@@ -53,3 +54,22 @@ test("renders the first switch match", () => {
 
   expect(getByText("test success")).toBeTruthy();
 });
+
+test("switch doesn't block", () => {
+  const { Route, Switch } = createRouter(routes, history);
+
+  const { getByText } = render(
+    <MemoryRouter initialEntries={["/test"]} initialIndex={0}>
+      <Switch>
+        <Route exact path="root">
+          <div>root</div>
+        </Route>
+        <Route exact path="test">
+          <div>test success</div>
+        </Route>
+      </Switch>
+    </MemoryRouter>
+  );
+
+  expect(getByText("test success")).toBeTruthy();
+})

@@ -44,6 +44,7 @@ export interface INamesakeSwitchProps {
 
 export interface IEnrichedChildren {
   exact?: boolean;
+  strict?: boolean;
   path: string;
 }
 
@@ -64,8 +65,8 @@ const createRouter = (
     ...props
   }: INamesakeRouteProps): React.ReactElement => {
     const path = Array.isArray(namedPath)
-      ? namedPath.map(p => getPath(namedPath, params))
-      : getPath(namedPath, params);
+      ? namedPath.map(p => routePath(namedPath))
+      : routePath(namedPath);
     return <Route {...props} path={path} />;
   };
 
@@ -91,11 +92,12 @@ const createRouter = (
               return;
             }
             element = child;
-            const { exact, path } = child.props;
+            const { exact, path, strict } = child.props;
             match = path
               ? matchPath(location.pathname, {
                   exact,
-                  path: routePath(path)
+                  path: routePath(path),
+                  strict,
                 })
               : matchPath(location.pathname, {
                   exact: false,
