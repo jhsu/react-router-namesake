@@ -56,7 +56,7 @@ const createRouter = (
     return generatePath(routePath(path), params);
   };
   const routePath = (path: string): string => {
-    return routes[path];
+    return routes[path] || path;
   };
 
   const NamesakeRoute = ({
@@ -64,9 +64,9 @@ const createRouter = (
     params,
     ...props
   }: INamesakeRouteProps): React.ReactElement => {
-    const path = Array.isArray(namedPath)
-      ? namedPath.map(p => routePath(namedPath))
-      : routePath(namedPath);
+    const gen = (route: string) =>
+      params ? generatePath(route, params) : routePath(route);
+    const path = Array.isArray(namedPath) ? namedPath.map(gen) : gen(namedPath);
     return <Route {...props} path={path} />;
   };
 
@@ -97,7 +97,7 @@ const createRouter = (
               ? matchPath(location.pathname, {
                   exact,
                   path: routePath(path),
-                  strict,
+                  strict
                 })
               : matchPath(location.pathname, {
                   exact: false,
