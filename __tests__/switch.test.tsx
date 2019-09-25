@@ -1,24 +1,17 @@
 import { render } from "@testing-library/react";
-import { createBrowserHistory, History } from "history";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 
 import createRouter from "../src";
 
-let history: History;
-
-beforeEach(() => {
-  history = createBrowserHistory();
-});
-
 const routes = {
   home: "/home",
   root: "/",
-  test: "/test",
+  test: "/test"
 };
 
 test("renders switch fallback", () => {
-  const { Route, Switch } = createRouter(routes, history);
+  const { Route, Switch } = createRouter(routes);
 
   const { getByText } = render(
     <MemoryRouter initialEntries={["/tes"]} initialIndex={0}>
@@ -37,7 +30,7 @@ test("renders switch fallback", () => {
 });
 
 test("renders the first switch match", () => {
-  const { Route, Switch } = createRouter(routes, history);
+  const { Route, Switch } = createRouter(routes);
 
   const { getByText } = render(
     <MemoryRouter initialEntries={["/test"]} initialIndex={0}>
@@ -56,7 +49,7 @@ test("renders the first switch match", () => {
 });
 
 test("switch doesn't block", () => {
-  const { Route, Switch } = createRouter(routes, history);
+  const { Route, Switch } = createRouter(routes);
 
   const { getByText } = render(
     <MemoryRouter initialEntries={["/test"]} initialIndex={0}>
@@ -72,4 +65,4 @@ test("switch doesn't block", () => {
   );
 
   expect(getByText("test success")).toBeTruthy();
-})
+});

@@ -1,13 +1,15 @@
-import { History, Location, LocationDescriptor } from "history";
+import { History, LocationDescriptor } from "history";
 import * as React from "react";
 import {
   generatePath,
-  Link,
-  LinkProps,
   matchPath,
   Route,
-  RouteProps
-} from "react-router-dom";
+  RouteProps,
+  useHistory,
+  useLocation
+} from "react-router";
+
+import { Link, LinkProps } from "react-router-dom";
 
 export interface INamesakeHook {
   history: History;
@@ -17,7 +19,7 @@ export interface INamesakeHook {
 export interface INamesakeRouter {
   getPath: (path: string, params: IParams) => string;
   Route(props: RouteProps): React.ReactElement;
-  Switch(props: INamesakeSwitchProps): React.ReactElement;
+  Switch(props: INamesakeSwitchProps): React.ReactElement | null;
   Link(props: LinkProps): React.ReactElement;
   useNamesake(): INamesakeHook;
 }
@@ -49,8 +51,7 @@ export interface IEnrichedChildren {
 }
 
 const createRouter = (
-  routes: { [key: string]: string } = {},
-  history: History
+  routes: { [key: string]: string } = {}
 ): INamesakeRouter => {
   const getPath = (path: string, params: IParams = {}): string => {
     return generatePath(routePath(path), params);
@@ -81,39 +82,35 @@ const createRouter = (
 
   const NamesakeSwitch = ({
     children
-  }: INamesakeSwitchProps): React.ReactElement => {
-    return (
-      <Route
-        render={({ location }) => {
-          let element: React.ReactElement | null = null;
-          let match: {} | null = null;
-          React.Children.forEach(children, (child: React.ReactElement, idx) => {
-            if (match || !React.isValidElement<IEnrichedChildren>(child)) {
-              return;
-            }
-            element = child;
-            const { exact, path, strict } = child.props;
-            match = path
-              ? matchPath(location.pathname, {
-                  exact,
-                  path: routePath(path),
-                  strict
-                })
-              : matchPath(location.pathname, {
-                  exact: false,
-                  path: "/",
-                  strict: false
-                });
+  }: INamesakeSwitchProps): React.ReactElement | null => {
+    const location = useLocation();
+    let element: React.ReactElement | null = null;
+    let match: {} | null = null;
+    React.Children.forEach(children, (child: React.ReactElement, idx) => {
+      if (match || !React.isValidElement<IEnrichedChildren>(child)) {
+        return;
+      }
+      element = child;
+      const { exact, path, strict } = child.props;
+      match = path
+        ? matchPath(location.pathname, {
+            exact,
+            path: routePath(path),
+            strict
+          })
+        : matchPath(location.pathname, {
+            exact: false,
+            path: "/",
+            strict: false
           });
-          return match && element
-            ? React.cloneElement(element, { location, computedMatch: match })
-            : null;
-        }}
-      />
-    );
+    });
+    return match && element
+      ? React.cloneElement(element, { location, computedMatch: match })
+      : null;
   };
 
   const useNamesake = (): INamesakeHook => {
+    const history = useHistory();
     return {
       history,
       transitionTo: (namedPath: string, params: IParams): void => {
