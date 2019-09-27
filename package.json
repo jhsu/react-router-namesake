@@ -1,6 +1,6 @@
 {
   "name": "react-router-namesake",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Named routes for react-router",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
