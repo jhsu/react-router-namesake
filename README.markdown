@@ -1,5 +1,9 @@
 ![react-router-namesake logo](logo.png)
 
+Named routes for react-router.
+
+This depends on `react-router >= 5.1.0` for its react hooks api.
+
 # react-router-namesake
 [![Build Status](https://travis-ci.org/jhsu/react-router-namesake.svg?branch=v1.0)](https://travis-ci.org/jhsu/react-router-namesake)
 
@@ -10,9 +14,8 @@
 const history = createBrowserHistory();
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
-import createRouter from 'react-router-namesake';
+import { BrowserRouter } from "react-router-dom";
+import { NamedRoutes, Link, Route, Switch } from 'react-router-namesake';
 
 const routes = {
   home: "/",
@@ -20,33 +23,33 @@ const routes = {
   page: "/pages/:pageId"
 };
 
-const { Route, Switch, Link, useNamesake } = createRouter(routes, history);
-
 const App = () => {
   const { transitionTo } = useNamesake();
   return (
-    <Router history={history}>
-      <nav>
-        <Link to="home">home</Link>
-        <Link to="about">about</Link>
-        <Link to="page" params={{ pageId: 1 }}>
-          page 1
-        </Link>
-        <button onClick={() => void transitionTo("home")}>go home</button>
-      </nav>
-      <div>
-        <Switch>
-          <Route exact path="home" render={() => <div>home</div>} />
-          <Route exact path="about" render={() => <div>about</div>} />
-          <Route
-            exact
-            path="page"
-            params={{ pageId: 1 }}
-            render={() => <div>page 1</div>}
-          />
-        </Switch>
-      </div>
-    </Router>
+    <BrowserRouter>
+      <NamedRoutes routes={routes}>
+        <nav>
+          <Link to="home">home</Link>
+          <Link to="about">about</Link>
+          <Link to="page" params={{ pageId: 1 }}>
+            page 1
+          </Link>
+          <button onClick={() => void transitionTo("home")}>go home</button>
+        </nav>
+        <div>
+          <Switch>
+            <Route exact path="home" render={() => <div>home</div>} />
+            <Route exact path="about" render={() => <div>about</div>} />
+            <Route
+              exact
+              path="page"
+              params={{ pageId: 1 }}
+              render={() => <div>page 1</div>}
+            />
+          </Switch>
+        </div>
+      </NamedRoutes>
+    </BrowserRouter>
   );
 };
 ```
