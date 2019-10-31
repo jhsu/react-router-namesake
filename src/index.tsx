@@ -8,42 +8,12 @@ import {
   useHistory,
   useLocation
 } from "react-router";
+import { Link as RouterLink } from "react-router-dom";
 
-import { Link as RouterLink, LinkProps } from "react-router-dom";
-
-const { useMemo, useContext } = React;
-
-export interface INamesakeHook {
-  history: History;
-  transitionTo(namedPath: string, params?: IParams): void;
-}
-
-export interface INamesakeRouter {
-  Route(props: RouteProps): React.ReactElement;
-  Switch(props: INamesakeSwitchProps): React.ReactElement | null;
-  Link(props: LinkProps): React.ReactElement;
-  useNamesake(): INamesakeHook;
-}
+const { useCallback, useContext, useMemo } = React;
 
 export interface IParams {
   [paramName: string]: boolean | string | number;
-}
-
-export interface INamesakeRouteProps extends RouteProps {
-  path?: string;
-  params?: IParams;
-}
-
-export interface INamesakeLinkProps {
-  children?: React.ReactNode;
-  params?: IParams;
-  to: string;
-  replace?: boolean;
-  innerRef?: React.Ref<any>;
-}
-
-export interface INamesakeSwitchProps {
-  children: React.ReactElement | React.ReactElement[];
 }
 
 export interface IEnrichedChildren {
@@ -53,11 +23,11 @@ export interface IEnrichedChildren {
 }
 
 interface IContextProps {
-  getPath(path: string, params?: IParams): string;
+  getPath(path?: string, params?: IParams): string;
   routePath(path: string): string;
 }
 const Context = React.createContext<IContextProps>({
-  getPath: (path: string, params?: IParams) => path,
+  getPath: (path: string) => path,
   routePath: (path: string) => path
 });
 
@@ -65,15 +35,25 @@ interface IRouteProviderProps {
   routes: { [routeName: string]: string };
   children: React.ReactNode;
 }
-export const NamedRoutes = ({ children, routes }: IRouteProviderProps) => {
-  // TODO: memoize this
-  const routePath = (path: string): string => {
-    return routes[path] || path;
-  };
-  // TODO: memoize this
-  const getPath = (path: string, params?: IParams): string => {
-    return generatePath(routePath(path), params);
-  };
+export const NamedRoutes: React.FC<IRouteProviderProps> = ({
+  children,
+  routes
+}) => {
+  const routePath = useCallback(
+    (path: string): string => {
+      return routes[path] || path;
+    },
+    [routes]
+  );
+  const getPath = useCallback(
+    (route?: string, params?: IParams) => {
+      if (!route) {
+        return "";
+      }
+      return params ? generatePath(route, params) : routePath(route);
+    },
+    [routePath]
+  );
 
   const value = useMemo(
     () => ({
@@ -85,35 +65,41 @@ export const NamedRoutes = ({ children, routes }: IRouteProviderProps) => {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export const Route = ({
+export interface INamesakeRouteProps extends RouteProps {
+  path?: string;
+  params?: IParams;
+}
+export const Route: React.FC<INamesakeRouteProps> = ({
   path: namedPath,
   params,
   ...props
-}: INamesakeRouteProps): React.ReactElement => {
-  const { routePath } = useContext(Context);
-  const gen = (route?: string) => {
-    if (!route) {
-      return "";
-    }
-    return params ? generatePath(route, params) : routePath(route);
-  };
-  const path = Array.isArray(namedPath) ? namedPath.map(gen) : gen(namedPath);
-  return <ReactRouterRoute {...props} path={path} />;
+}) => {
+  const { getPath } = useContext(Context);
+  return <ReactRouterRoute {...props} path={getPath(namedPath, params)} />;
 };
 
-export const Link = ({
+export interface INamesakeLinkProps {
+  children?: React.ReactNode;
+  params?: IParams;
+  to: string;
+  replace?: boolean;
+  innerRef?: React.Ref<any>;
+}
+
+export const Link: React.FC<INamesakeLinkProps> = ({
   to: namedPath,
   params,
   ...props
-}: INamesakeLinkProps): React.ReactElement => {
+}) => {
   const { getPath } = useContext(Context);
   const path: LocationDescriptor = getPath(namedPath, params);
   return <RouterLink {...props} to={path} />;
 };
 
-export const Switch = ({
-  children
-}: INamesakeSwitchProps): React.ReactElement | null => {
+export interface INamesakeSwitchProps {
+  children: React.ReactElement | React.ReactElement[];
+}
+export const Switch: React.FC<INamesakeSwitchProps> = ({ children }) => {
   const { routePath } = useContext(Context);
   const location = useLocation();
   let element: React.ReactElement | null = null;
@@ -141,6 +127,10 @@ export const Switch = ({
     : null;
 };
 
+export interface INamesakeHook {
+  history: History;
+  transitionTo(namedPath: string, params?: IParams): void;
+}
 export const useNamesake = (): INamesakeHook => {
   const { getPath } = useContext(Context);
   const history = useHistory();
