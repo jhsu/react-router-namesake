@@ -13,7 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 const { useCallback, useContext, useMemo } = React;
 
 export interface IParams {
-  [paramName: string]: boolean | string | number;
+  [paramName: string]: string | number | boolean | undefined;
 }
 
 export interface IEnrichedChildren {
@@ -31,7 +31,7 @@ const Context = React.createContext<IContextProps>({
   routePath: (path: string) => path
 });
 
-interface IRouteProviderProps {
+export interface IRouteProviderProps {
   routes: { [routeName: string]: string };
   children: React.ReactNode;
 }
@@ -66,7 +66,7 @@ export const NamedRoutes: React.FC<IRouteProviderProps> = ({
 };
 
 export interface INamesakeRouteProps extends RouteProps {
-  path?: string;
+  path?: string | string[];
   params?: IParams;
 }
 export const Route: React.FC<INamesakeRouteProps> = ({
@@ -75,7 +75,16 @@ export const Route: React.FC<INamesakeRouteProps> = ({
   ...props
 }) => {
   const { getPath } = useContext(Context);
-  return <ReactRouterRoute {...props} path={getPath(namedPath, params)} />;
+  return (
+    <ReactRouterRoute
+      {...props}
+      path={
+        Array.isArray(namedPath)
+          ? namedPath.map(p => getPath(p, params))
+          : getPath(namedPath, params)
+      }
+    />
+  );
 };
 
 export interface INamesakeLinkProps {
@@ -129,12 +138,14 @@ export const Switch: React.FC<INamesakeSwitchProps> = ({ children }) => {
 
 export interface INamesakeHook {
   history: History;
+  getPath(path?: string, params?: IParams): string;
   transitionTo(namedPath: string, params?: IParams): void;
 }
 export const useNamesake = (): INamesakeHook => {
   const { getPath } = useContext(Context);
   const history = useHistory();
   return {
+    getPath,
     history,
     transitionTo: (namedPath: string, params: IParams): void => {
       const pathname = getPath(namedPath, params);
