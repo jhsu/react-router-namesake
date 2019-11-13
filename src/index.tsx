@@ -8,7 +8,7 @@ import {
   useHistory,
   useLocation
 } from "react-router";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, LinkProps } from "react-router-dom";
 
 const { useCallback, useContext, useMemo } = React;
 
@@ -69,11 +69,11 @@ export interface INamesakeRouteProps extends RouteProps {
   path?: string | string[];
   params?: IParams;
 }
-export const Route: React.FC<INamesakeRouteProps> = ({
+export const Route = ({
   path: namedPath,
   params,
   ...props
-}) => {
+}: INamesakeRouteProps) => {
   const { getPath } = useContext(Context);
   return (
     <ReactRouterRoute
@@ -87,7 +87,7 @@ export const Route: React.FC<INamesakeRouteProps> = ({
   );
 };
 
-export interface INamesakeLinkProps {
+export interface INamesakeLinkProps extends LinkProps {
   children?: React.ReactNode;
   params?: IParams;
   to: string;
