@@ -69,6 +69,7 @@ export interface INamesakeRouteProps extends RouteProps {
   path?: string | string[];
   params?: IParams;
   children?: React.ReactNode;
+  exact?: boolean;
 }
 export const Route = ({
   path: namedPath,
