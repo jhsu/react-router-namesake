@@ -68,6 +68,7 @@ export const NamedRoutes: React.FC<IRouteProviderProps> = ({
 export interface INamesakeRouteProps extends RouteProps {
   path?: string | string[];
   params?: IParams;
+  children?: React.ReactNode;
 }
 export const Route = ({
   path: namedPath,
@@ -88,18 +89,17 @@ export const Route = ({
 };
 
 export interface INamesakeLinkProps extends LinkProps {
-  children?: React.ReactNode;
   params?: IParams;
   to: string;
   replace?: boolean;
   innerRef?: React.Ref<any>;
+  children?: React.ReactNode;
 }
-
-export const Link: React.FC<INamesakeLinkProps> = ({
+export const Link = ({
   to: namedPath,
   params,
   ...props
-}) => {
+}: INamesakeLinkProps) => {
   const { getPath } = useContext(Context);
   const path: LocationDescriptor = getPath(namedPath, params);
   return <RouterLink {...props} to={path} />;
