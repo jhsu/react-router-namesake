@@ -1,34 +1,28 @@
 import { render } from "@testing-library/react";
-import { createBrowserHistory, History } from "history";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 
-import createRouter from "../src";
-
-let history: History;
-
-beforeEach(() => {
-  history = createBrowserHistory();
-});
+import { NamedRoutes, Route, Switch } from "../src";
 
 const routes = {
   home: "/home",
+  root: "/",
   test: "/test"
 };
 
 test("renders switch fallback", () => {
-  const { Route, Switch } = createRouter(routes, history);
-
   const { getByText } = render(
     <MemoryRouter initialEntries={["/tes"]} initialIndex={0}>
-      <Switch>
-        <Route exact path="test">
-          <div>skip this path</div>
-        </Route>
-        <Route>
-          <div>fallback</div>
-        </Route>
-      </Switch>
+      <NamedRoutes routes={routes}>
+        <Switch>
+          <Route exact path="test">
+            <div>skip this path</div>
+          </Route>
+          <Route>
+            <div>fallback</div>
+          </Route>
+        </Switch>
+      </NamedRoutes>
     </MemoryRouter>
   );
 
@@ -36,18 +30,37 @@ test("renders switch fallback", () => {
 });
 
 test("renders the first switch match", () => {
-  const { Route, Switch } = createRouter(routes, history);
-
   const { getByText } = render(
     <MemoryRouter initialEntries={["/test"]} initialIndex={0}>
-      <Switch>
-        <Route exact path="test">
-          <div>test success</div>
-        </Route>
-        <Route>
-          <div>fallback</div>
-        </Route>
-      </Switch>
+      <NamedRoutes routes={routes}>
+        <Switch>
+          <Route exact path="test">
+            <div>test success</div>
+          </Route>
+          <Route>
+            <div>fallback</div>
+          </Route>
+        </Switch>
+      </NamedRoutes>
+    </MemoryRouter>
+  );
+
+  expect(getByText("test success")).toBeTruthy();
+});
+
+test("switch doesn't block", () => {
+  const { getByText } = render(
+    <MemoryRouter initialEntries={["/test"]} initialIndex={0}>
+      <NamedRoutes routes={routes}>
+        <Switch>
+          <Route exact path="root">
+            <div>root</div>
+          </Route>
+          <Route exact path="test">
+            <div>test success</div>
+          </Route>
+        </Switch>
+      </NamedRoutes>
     </MemoryRouter>
   );
 
