@@ -15,3 +15,15 @@ test("render a link", () => {
   );
   expect(getByText("go home")).toBeTruthy();
 });
+
+test("render a link with params", () => {
+  const routes = { page: "/page/:pageId/show" };
+  const { getByText } = render(
+    <MemoryRouter>
+      <NamedRoutes routes={routes}>
+        <Link to="page" params={{ pageId: 123 }}>page link</Link>
+      </NamedRoutes>
+    </MemoryRouter>
+  );
+  expect(getByText("page link").getAttribute('href')).toEqual('/page/123/show');
+});

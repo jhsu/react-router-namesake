@@ -11,7 +11,6 @@ This depends on `react-router >= 5.1.0` for its react hooks api.
 ## Example
 
 ```jsx
-const history = createBrowserHistory();
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";

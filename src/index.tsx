@@ -50,7 +50,7 @@ export const NamedRoutes: React.FC<IRouteProviderProps> = ({
       if (!route) {
         return "";
       }
-      return params ? generatePath(route, params) : routePath(route);
+      return params ? generatePath(routePath(route), params) : routePath(route);
     },
     [routePath]
   );
