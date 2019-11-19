@@ -56,6 +56,7 @@ function App() {
               <div>
                 show page
                 <Button to="home">back home</Button>
+                <Button to="pages">go to pages index</Button>
               </div>
             </Route>
             <Route path="pages">
