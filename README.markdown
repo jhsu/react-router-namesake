@@ -1,66 +1,56 @@
 ![react-router-namesake logo](logo.png)
 
+Named routes for react-router.
+
+This depends on `react-router >= 5.1.0` for its react hooks api.
+
 # react-router-namesake
-[![Build Status](https://travis-ci.org/jhsu/react-router-namesake.svg?branch=master)](https://travis-ci.org/jhsu/react-router-namesake)
+[![Build Status](https://travis-ci.org/jhsu/react-router-namesake.svg?branch=v1.0)](https://travis-ci.org/jhsu/react-router-namesake)
 
 
 ## Example
 
 ```jsx
-import { Switch } from "react-router";
-import { BrowserRouter, Route, Link } from "react-router-dom";
-import { Router as NamesakeRouter, WithNamesake, NamesakeLink, NamesakeRoute } from "react-router-namesake";
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import { NamedRoutes, Link, Route, Switch } from 'react-router-namesake';
 
-const ButtonLink = ({ to, params }) => {
-  return <WithNamesake>{({ routes }) => (
-    <button onClick={() => routes.transitionTo(path, params)}>{this.props.children}</button>
-  )}</WithNamesake>;
-}
+const routes = {
+  home: "/",
+  about: "/about",
+  page: "/pages/:pageId"
+};
 
-const App = () => (
-  <div>
+const App = () => {
+  const { transitionTo } = useNamesake();
+  return (
     <BrowserRouter>
-      <Route>{({ history }) => (
-        <NamesakeRouter
-          push={history.push}
-          routes={{
-            home: "/home",
-            users: "/users",
-            user: "/users/:userId"
-          }}
-        >
-          <div>
-            <nav>
-              <NamesakeLink to="home">Home</NamesakeLink>
-              <NamesakeLink to="users">users</NamesakeLink>
-              <NamesakeLink to="user" params={{ userId: 123 }}>
-                user id 123
-              </NamesakeLink>
-            </nav>
-
-            <NamesakeRoute exact path='user'>
-              <p>This renders for /user/:userId</p>
-            </NamesakeRoute>
-
-            <ButtonLink to='user' params={{ userId: 123 }}>Go to User 123</ButtonLink>
-
-            <Switch>
-              <Route exact path="/home">
-                <h2>Home</h2>
-              </Route>
-              <Route exact path="/users">
-                <h2>Users Page</h2>
-              </Route>
-              <Route exact path="/users/:userId">
-                <h2>A User's Page</h2>
-              </Route>
-            </Switch>
-          </div>
-        </NamesakeRouter>
-      )}</Route>
+      <NamedRoutes routes={routes}>
+        <nav>
+          <Link to="home">home</Link>
+          <Link to="about">about</Link>
+          <Link to="page" params={{ pageId: 1 }}>
+            page 1
+          </Link>
+          <button onClick={() => void transitionTo("home")}>go home</button>
+        </nav>
+        <div>
+          <Switch>
+            <Route exact path="home" render={() => <div>home</div>} />
+            <Route exact path="about" render={() => <div>about</div>} />
+            <Route
+              exact
+              path="page"
+              params={{ pageId: 1 }}
+              render={() => <div>page 1</div>}
+            />
+          </Switch>
+        </div>
+      </NamedRoutes>
     </BrowserRouter>
-  </div>
-);
+  );
+};
 ```
 
-[demo](https://codesandbox.io/s/2o6mv5nx5p)
+[demo](https://codesandbox.io/s/fervent-matsumoto-3fi7n)

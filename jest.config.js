@@ -1,24 +1,20 @@
 module.exports = {
-  "roots": [
-    "<rootDir>/src"
+  testURL: 'http://localhost/',
+  setupFilesAfterEnv: [
+    '<rootDir>/src/setupEnzyme.ts',
   ],
-  "testURL": "http://localhost/",
-  "setupTestFrameworkScriptFile": "<rootDir>/__tests__/setup.ts",
-  "transform": {
-    "^.+\\.tsx?$": "ts-jest"
-  },
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
+  moduleFileExtensions: [
+    'js',
+    'json',
+    'jsx',
+    'node',
+    'ts',
+    'tsx',
   ],
-  "globals": {
-    "ts-jest": {
-      "tsConfigFile": "tsconfig.test.json",
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig.test.json',
     },
   },
-};
+  preset: 'ts-jest',
+}
